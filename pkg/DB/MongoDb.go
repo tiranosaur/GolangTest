@@ -2,7 +2,6 @@ package DB
 
 import (
 	"context"
-	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -114,10 +113,7 @@ func (m MongoDB) FillDB() {
 	db := GetInstance()
 	users := controller.GetUserFromFile().Users
 	for _, user := range users {
-		_, err := db.Database(MongoDbName).Collection(model.UserTableName).InsertOne(context.TODO(), user)
-		if err != nil {
-			fmt.Println(err)
-		}
+		go db.Database(MongoDbName).Collection(model.UserTableName).InsertOne(context.TODO(), user)
 	}
 }
 
