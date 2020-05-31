@@ -1,6 +1,7 @@
 package DB
 
 import (
+	"GolangTest/model"
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -8,8 +9,6 @@ import (
 	"log"
 	"math"
 	"strconv"
-	"test/controller"
-	"test/model"
 )
 
 const MongoDbName = "test"
@@ -109,9 +108,8 @@ func (m MongoDB) CreateDB() {
 
 }
 
-func (m MongoDB) FillDB() {
+func (m MongoDB) FillDB(users []model.User) {
 	db := GetInstance()
-	users := controller.GetUserFromFile().Users
 	for _, user := range users {
 		go db.Database(MongoDbName).Collection(model.UserTableName).InsertOne(context.TODO(), user)
 	}

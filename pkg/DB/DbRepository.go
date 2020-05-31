@@ -1,6 +1,6 @@
 package DB
 
-import "test/model"
+import "GolangTest/model"
 
 type DbInterface interface {
 	UpdatetUser(model.User)
@@ -9,6 +9,7 @@ type DbInterface interface {
 	CreateDB()
 	FillDB()
 }
+
 func GetDb() *MongoDB {
-	return  new(MongoDB)
+	return new(MongoDB)
 }
