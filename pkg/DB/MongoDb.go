@@ -24,7 +24,6 @@ func (m MongoDB) UpdateUser(user model.User) (bool, string) {
 	filter := bson.D{{"_id", user.Id}}
 	update := bson.D{{"$set",
 		bson.D{
-			{"email", user.Email},
 			{"last_name", user.Last_Name},
 			{"country", user.Country},
 			{"city", user.City},

@@ -40,15 +40,20 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	var user model.User
 	err := decoder.Decode(&user)
 	if err != nil {
-		model.SendSimpleResponse(w, r, false, "Empty data")
+		model.SendJsonResponse(w, r, false, map[string]string{"message": "Empty data"})
+		return
+	}
+	status, errors := user.Validate()
+	if !status {
+		model.SendJsonResponse(w, r, false, errors)
 		return
 	}
 	result, message := db.UpdateUser(user)
 	if result {
-		model.SendSimpleResponse(w, r, true, "User updated successfully")
+		model.SendJsonResponse(w, r, true, map[string]string{"message": "User updated successfully"})
 		return
 	} else {
-		model.SendSimpleResponse(w, r, true, message)
+		model.SendJsonResponse(w, r, true, map[string]string{"message": message})
 		return
 	}
 }
@@ -68,15 +73,20 @@ func InsertUser(w http.ResponseWriter, r *http.Request) {
 	var user model.User
 	err := decoder.Decode(&user)
 	if err != nil {
-		model.SendSimpleResponse(w, r, false, "Empty data")
+		model.SendJsonResponse(w, r, false, map[string]string{"message": "Empty data"})
 		return
 	}
-	result, message := db.InsertUser(user)
-	if result {
-		model.SendSimpleResponse(w, r, true, "User added successfully")
+	status, errors := user.Validate()
+	if !status {
+		model.SendJsonResponse(w, r, false, errors)
+		return
+	}
+	status, message := db.InsertUser(user)
+	if status {
+		model.SendJsonResponse(w, r, true, map[string]string{"message": "User added successfully"})
 		return
 	} else {
-		model.SendSimpleResponse(w, r, true, message)
+		model.SendJsonResponse(w, r, false, map[string]string{"message": message})
 		return
 	}
 }

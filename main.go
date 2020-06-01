@@ -28,7 +28,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "home!")
 		fmt.Println("Endpoint Hit: home")
 	} else {
-		model.SendSimpleResponse(w, r, false, "This method not presented")
+		model.SendJsonResponse(w, r, false, map[string]string{"message": "This method is not presented"})
 		return
 	}
 }
@@ -41,7 +41,7 @@ func User(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "PATCH" {
 		controller.UpdateUser(w, r)
 	} else {
-		model.SendSimpleResponse(w, r, false, "This method not presented")
+		model.SendJsonResponse(w, r, false, map[string]string{"message": "This method is not presented"})
 		return
 	}
 }
@@ -53,11 +53,10 @@ func fillDb(w http.ResponseWriter, r *http.Request) {
 		db := DB.GetDb()
 		db.CreateDB()
 		db.FillDB(users)
-
-		model.SendSimpleResponse(w, r, true, "Db filled successfully")
+		model.SendJsonResponse(w, r, true, map[string]string{"message": "Db filled successfully"})
 		return
 	} else {
-		model.SendSimpleResponse(w, r, false, "This method not presented")
+		model.SendJsonResponse(w, r, true, map[string]string{"message": "This method is not presented"})
 		return
 	}
 }
